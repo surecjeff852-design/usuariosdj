@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Completa de Productos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background:#ffffff; }
+        .container-box { background:white; padding:20px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1); margin-top: 5px; }
+        .pagination { flex-wrap: wrap; gap: 4px; }
+        .table-responsive { overflow-x:auto; }
+        .logo-top-left {
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            height: 155px;
+            z-index: 1000;
+        }
+    </style>
+
+    <img src="{% static 'img/uni.png' %}" class="logo-top-left">
+</head>
+
+<body>
+<div class="container" style="padding-left: 65px;">
+    <div class="container-box">
+        <h2 class="text-center mb-4">Inventario</h2>
+
+        <form method="GET" class="mb-3 d-flex">
+            <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Buscar...">
+            <button class="btn btn-success" type="submit">Buscar</button>
+        </form>
+
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Capacidad</th>
+                    {#<th>Autor</th>#}
+                    {#<th>Fecha</th>#}
+                    {#<th>Fecha Modif.</th>#}                   {#        #}
+                    {#<th>Estado</th>#}
+                    {#<th>Tipo</th>#}
+                    {#<th>GUID</th>#}
+                    {#<th>Conteo comentarios</th>#}
+                    {#<th>SKU</th>#}
+                    {#<th>Virtual</th>#}
+                    {#<th>Descargable</th>#}
+                    {#<th>Precio mínimo</th>#}
+                    {#<th>Precio máximo</th>#}
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    <th>Ventas Totales</th>
+                    {#<th>Rating Count</th>#}
+                    {#<th>Rating Promedio</th>#}
+                    {#<th>Impuesto (status)</th>#}
+                    {#<th>Clase de impuesto</th>#}
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for p in page_obj %}
+                <tr>
+                    <td>{{ p.ID }}</td>
+                    <td>{{ p.post_title }}</td>
+                    <td>{{ p.post_excerpt|default:"No disponible" }}</td>
+                    {#<td>{{ p.post_author }}</td>#}
+                    {#<td>{{ p.post_date }}</td>#}
+                    {#<td>{{ p.post_modified }}</td>#}
+                    {#<td>{{ p.post_status }}</td>#}
+                    {#<td>{{ p.post_type }}</td>#}
+                    {#<td>{{ p.guid }}</td>#}
+                    {#<td>{{ p.comment_count }}</td>#}
+                    {#<td>{{ p.sku }}</td>#}
+                    {#<td>{{ p.virtual }}</td>#}
+                    {#<td>{{ p.downloadable }}</td>#}
+                    {#<td>{{ p.min_price }}</td>#}
+                    {#<td>{{ p.max_price }}</td>#}
+                    <td>{{ p.stock }}</td>
+                    <td>
+                        {% if p.stock_status == 'instock' %}
+                            Disponible
+                        {% elif p.stock_status == 'outofstock' %}
+                            Agotado
+                        {% elif p.stock_status == 'onbackorder' %}
+                            En pedido
+                        {% else %}
+                            Desconocido
+                        {% endif %}
+                    </td>
+                    <td>{{ p.total_sales }}</td>
+                    {#<td>{{ p.rating_count }}</td>#}
+                    {#<td>{{ p.average_rating }}</td>#}
+                    {#<td>{{ p.tax_status }}</td>#}
+                    {#<td>{{ p.tax_class }}</td>#}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="22" class="text-center text-danger">No se encontraron productos.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if num >= page_obj.number|add:-2 and num <= page_obj.number|add:2 %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if q %}&q={{ q }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}">Siguiente</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+</body>
+</html>
