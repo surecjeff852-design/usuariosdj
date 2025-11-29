@@ -7,6 +7,7 @@ El proyecto es un inventario que esta conectado a una base de datos que muestra 
 # Tecnologias utilizadas:
 asgiref==3.11.0
 Django==4.2.26
+Python==3.9.13
 mysqlclient==2.2.7
 psycopg2==2.9.11
 sqlparse==0.5.3
