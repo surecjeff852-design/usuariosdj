@@ -17,7 +17,7 @@ Unipath==1.1
 # Instalacion:
 1. Clona este repositorio:
 '''bash
-git cloen https://github.com/surecjeff852-design/usuariosdj.git
+git clone https://github.com/surecjeff852-design/usuariosdj.git
 
 2. Entrar al directorio del proyecto:
 cd usuariosdj
@@ -29,7 +29,7 @@ python -m venv 'Proyecto'
 'Proyecto'\Scripts\activate
 
 5. Instalar dependencias:
-pip install -r requirements.txt
+pip install -r requirements.txt         
 
 6. Aplicar migraciones:
 python manage.py makemigrations/migrate
@@ -44,3 +44,12 @@ Estos son los datos para el acceso a la base de datos
     "PASSWORD": "Jefferson1"
     'HOST':'localhost',
     'PORT':'3306',
+
+# Configuracion para Mysql:
+CREATE DATABASE mi_base;
+CREATE USER 'usuario_django'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON mi_base.* TO 'usuario_django'@'localhost';
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON *.* TO 'esuoj'@'localhost' IDENTIFIED BY 'Jefferson1';
+FLUSH PRIVILEGES;
